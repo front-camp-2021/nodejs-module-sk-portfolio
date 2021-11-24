@@ -1,0 +1,6 @@
+{
+    "name":"lesson",
+    "scripts": {
+        "start": "nodemon homework-2/app.js"
+    }
+}
