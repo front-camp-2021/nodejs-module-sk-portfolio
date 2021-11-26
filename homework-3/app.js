@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const uuid = require("uuid");
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.post("/users", (req, res) => {
     if (err) throw err;
     else {
       let users = JSON.parse(data);
-      users.push(product);
+      users.push({ ...product, id: uuid.v4() });
       usersPost = JSON.stringify(users);
     }
     fs.writeFile(db, usersPost, (err) => {
@@ -51,7 +52,7 @@ app.put("/users/:id", (req, res) => {
     else {
       let users = JSON.parse(data);
       users = users.map((productFromDb) =>
-        id === productFromDb.id ? product : productFromDb
+        id === productFromDb.id ? { ...product, id: uuid.v4() } : productFromDb
       );
       console.log(users);
       usersPut = JSON.stringify(users);
