@@ -15,93 +15,91 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 
-app.get("/users", (req, res) => {
+app.get("/products", (req, res) => {
   fs.readFile(db, "utf8", (err, data) => {
     if (err) throw err;
     else {
-      let users = JSON.parse(data);
-      res.send(users);
+      let products = JSON.parse(data);
+      res.send(products);
     }
   });
 });
 
-app.post("/users", (req, res) => {
+app.post("/products", (req, res) => {
   const { product } = req.body;
   const parseProduct = JSON.stringify(product);
-  let usersPost;
+  let productsPost;
   fs.readFile(db, json, (err, data) => {
     if (err) throw err;
     else {
-      let users = JSON.parse(data);
-      users.push({ ...product, id: uuid.v4() });
-      usersPost = JSON.stringify(users);
+      let products = JSON.parse(data);
+      products.push({ ...product, id: uuid.v4() });
+      productsPost = JSON.stringify(products);
     }
-    fs.writeFile(db, usersPost, (err) => {
+    fs.writeFile(db, productsPost, (err) => {
       if (err) throw err;
       res.send(parseProduct);
     });
   });
 });
 
-app.put("/users/:id", (req, res) => {
+app.put("/products/:id", (req, res) => {
   const { id } = req.params;
   const { product } = req.body;
-  let usersPut;
+  let productsPut;
   fs.readFile(db, "utf8", (err, data) => {
     if (err) throw err;
     else {
-      let users = JSON.parse(data);
-      users = users.map((productFromDb) =>
+      let products = JSON.parse(data);
+      products = products.map((productFromDb) =>
         id === productFromDb.id ? { ...product, id: uuid.v4() } : productFromDb
       );
-      console.log(users);
-      usersPut = JSON.stringify(users);
-      console.log(usersPut);
+      productsPut = JSON.stringify(products);
     }
-    fs.writeFile(db, usersPut, (err) => {
+    fs.writeFile(db, productsPut, (err) => {
       if (err) throw err;
-      res.send(usersPut);
+      res.send(productsPut);
     });
   });
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/products/:id", (req, res) => {
   const { id } = req.params;
   fs.readFile(db, "utf8", (err, data) => {
     if (err) throw err;
     else {
-      let users = JSON.parse(data);
-      users = users.filter((product) => product.id === id);
-      const user = JSON.stringify(...users);
-      res.send(user);
+      let products = JSON.parse(data);
+      products = products.filter((product) => product.id === id);
+      const product = JSON.stringify(...products);
+      res.send(product);
     }
   });
 });
-app.delete("/users/:id", (req, res) => {
+app.delete("/products/:id", (req, res) => {
   const { id } = req.params;
-  let usersAfterDelete;
+  let productsAfterDelete;
   fs.readFile(db, "utf8", (err, data) => {
     if (err) throw err;
     else {
-      let users = JSON.parse(data);
-      users = users.filter((product) => product.id !== id);
-      usersAfterDelete = JSON.stringify(users);
+      let products = JSON.parse(data);
+      products = products.filter((product) => product.id !== id);
+      productsAfterDelete = JSON.stringify(products);
     }
-    fs.writeFile(db, usersAfterDelete, (err) => {
+    fs.writeFile(db, productsAfterDelete, (err) => {
       if (err) throw err;
-      res.send(usersAfterDelete);
+      res.send(productsAfterDelete);
     });
   });
 });
-app.delete("/users/", (req, res) => {
+app.delete("/products/", (req, res) => {
   fs.readFile(db, "utf8", (err, data) => {
     if (err) throw err;
     else {
-      let users = JSON.parse(data);
-      users = [];
-      const usersAfterDelete = JSON.stringify(users);
-      fs.writeFileSync(db, usersPut);
-      res.send(usersAfterDelete);
+      let products = JSON.parse(data);
+      products = [];
+      const productsAfterDelete = JSON.stringify(users);
+      fs.writeFileSync(db, productsAfterDelete);
+      res.send(productsAfterDelete);
     }
   });
 });
