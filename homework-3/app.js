@@ -95,9 +95,8 @@ app.delete("/products/", (req, res) => {
   fs.readFile(db, "utf8", (err, data) => {
     if (err) throw err;
     else {
-      let products = JSON.parse(data);
-      products = [];
-      const productsAfterDelete = JSON.stringify(users);
+      const products = [];
+      const productsAfterDelete = JSON.stringify(products);
       fs.writeFileSync(db, productsAfterDelete);
       res.send(productsAfterDelete);
     }
