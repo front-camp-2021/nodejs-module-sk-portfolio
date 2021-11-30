@@ -1,7 +1,7 @@
 [
     {
         "id": "76w0hz7015kkr9kjkav",
-        "isWished": false,
+        "isWished": true,
         "images": [
             "https://content2.rozetka.com.ua/goods/images/big_tile/163399632.jpg",
             "https://content.rozetka.com.ua/goods/images/big_tile/163399633.jpg"
@@ -22,7 +22,7 @@
         "rating": 1.96,
         "price": 21500,
         "category": "laptops",
-        "isWished": false,
+        "isWished": true,
         "brand": "acer"
     },
     {
@@ -35,7 +35,7 @@
         "rating": 2.42,
         "price": 22999,
         "category": "laptops",
-        "isWished": false,
+        "isWished": true,
         "brand": "acer"
     },
     {

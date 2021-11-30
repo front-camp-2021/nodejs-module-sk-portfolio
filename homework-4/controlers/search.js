@@ -2,7 +2,10 @@ const fs = require("fs");
 
 const productsDb = "./homework-4/db/products.json";
 
+const paginationServices = require("../services/pagination");
+
 const getFilteredProduts = (req, res) => {
+  const { page, limit } = req.query;
   const query = req.query.q;
   const brand = req.query.brand;
   const category = req.query.category;
@@ -15,7 +18,7 @@ const getFilteredProduts = (req, res) => {
     if (err) throw err;
     else {
       products = JSON.parse(data);
-      const filteredProducts = products.filter((product) => {
+      let filteredProducts = products.filter((product) => {
         const isQuery = query ? product.title.includes(query) : true;
         const isBrand = brand ? product.brand === brand : true;
         const isCategory = category ? product.category === category : true;
@@ -38,7 +41,13 @@ const getFilteredProduts = (req, res) => {
           return product;
         }
       });
-      filteredProducts = JSON.stringify(filteredProducts);
+      paginationProducts = paginationServices.paginationResult(
+        filteredProducts,
+        page,
+        limit
+      );
+      products = page && limit ? paginationProducts : filteredProducts;
+      filteredProducts = JSON.stringify(products);
       res.send(filteredProducts);
     }
   });
