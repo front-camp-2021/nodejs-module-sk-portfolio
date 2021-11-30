@@ -23,16 +23,12 @@ const numbersFile = "./homework-2/text/numbers.txt";
 const fileForReadAndDelete = "./homework-2/text/file-for-read-and-delete.txt";
 
 let numbers = "";
+for (let i = 1; i <= 10; i++) {
+  numbers = numbers + `${i}\n`;
+}
 
 fs.writeFile(numbersFile, numbers, (err) => {
   if (err) throw err;
-  console.log(`${numbersFile} was created`);
-  for (let i = 1; i <= 10; i++) {
-    numbers = numbers + `${i}\n`;
-  }
-  fs.appendFileSync(numbersFile, numbers, (err) => {
-    if (err) throw err;
-  });
   console.log(`${numbersFile} was written`);
 });
 

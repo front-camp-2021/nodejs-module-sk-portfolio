@@ -28,18 +28,16 @@ app.get("/products", (req, res) => {
 app.post("/products", (req, res) => {
   const { product } = req.body;
   const parseProduct = JSON.stringify(product);
-  let productsPost;
   fs.readFile(db, json, (err, data) => {
     if (err) throw err;
     else {
       let products = JSON.parse(data);
       products.push({ ...product, id: uuid.v4() });
-      productsPost = JSON.stringify(products);
+      fs.writeFile(db, JSON.stringify(products), (err) => {
+        if (err) throw err;
+        res.send(parseProduct);
+      });
     }
-    fs.writeFile(db, productsPost, (err) => {
-      if (err) throw err;
-      res.send(parseProduct);
-    });
   });
 });
 
@@ -69,8 +67,8 @@ app.get("/products/:id", (req, res) => {
     if (err) throw err;
     else {
       let products = JSON.parse(data);
-      products = products.filter((product) => product.id === id);
-      const product = JSON.stringify(...products);
+      let product = products.find((product) => product.id === id);
+      product = JSON.stringify(product);
       res.send(product);
     }
   });
@@ -82,7 +80,8 @@ app.delete("/products/:id", (req, res) => {
     if (err) throw err;
     else {
       let products = JSON.parse(data);
-      products = products.filter((product) => product.id !== id);
+      const productIndex = products.findIndex((product) => product.id === id);
+      products.splice(productIndex, 1);
       productsAfterDelete = JSON.stringify(products);
     }
     fs.writeFile(db, productsAfterDelete, (err) => {
@@ -98,7 +97,7 @@ app.delete("/products/", (req, res) => {
       const products = [];
       const productsAfterDelete = JSON.stringify(products);
       fs.writeFileSync(db, productsAfterDelete);
-      res.send(productsAfterDelete);
+      res.status(204).json({ status: "ok" });
     }
   });
 });

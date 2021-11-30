@@ -28,8 +28,8 @@ const getProduct = (req, res) => {
     if (err) throw err;
     else {
       let products = JSON.parse(data);
-      products = products.filter((productFromDb) => productFromDb.id === id);
-      const product = JSON.stringify(products);
+      let product = products.find((product) => product.id === id);
+      product = JSON.stringify(product);
       res.send(product);
     }
   });
