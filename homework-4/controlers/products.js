@@ -6,6 +6,7 @@ const paginationServices = require("../services/pagination");
 
 const getAllProducts = (req, res) => {
   let { page, limit } = req.query;
+
   fs.readFile(productsDb, "utf8", (err, data) => {
     if (err) throw err;
     else {
@@ -15,7 +16,8 @@ const getAllProducts = (req, res) => {
         page,
         limit
       );
-      products = page && limit ? paginationProducts : products;
+
+      products = paginationServices.paginationResult(products, page, limit);
       products = JSON.stringify(products);
       res.send(products);
     }

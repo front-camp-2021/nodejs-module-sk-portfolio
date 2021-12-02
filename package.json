@@ -1,7 +1,7 @@
 {
     "name": "lesson",
     "scripts": {
-        "start": "nodemon homework-3/app.js"
+        "start": "nodemon homework-4/app.js"
     },
     "dependencies": {
         "body-parser": "^1.19.0",

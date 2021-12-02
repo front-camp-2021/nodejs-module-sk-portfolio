@@ -30,7 +30,6 @@ const getFilteredProduts = (req, res) => {
           minRating && maxRating
             ? product.rating <= +maxRating && product.rating >= +minRating
             : true;
-
         if (
           isQuery &&
           isBrand &&
@@ -41,13 +40,13 @@ const getFilteredProduts = (req, res) => {
           return product;
         }
       });
-      paginationProducts = paginationServices.paginationResult(
+
+      filteredProducts = paginationServices.paginationResult(
         filteredProducts,
         page,
         limit
       );
-      products = page && limit ? paginationProducts : filteredProducts;
-      filteredProducts = JSON.stringify(products);
+      filteredProducts = JSON.stringify(filteredProducts);
       res.send(filteredProducts);
     }
   });

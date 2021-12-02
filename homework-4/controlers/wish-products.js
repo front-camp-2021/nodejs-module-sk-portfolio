@@ -11,12 +11,8 @@ const getWishProducts = (req, res) => {
     else {
       let products = JSON.parse(data);
       products = products.filter(({ isWished }) => isWished === true);
-      paginationProducts = paginationServices.paginationResult(
-        products,
-        page,
-        limit
-      );
-      products = page && limit ? paginationProducts : products;
+
+      products = paginationServices.paginationResult(products, page, limit);
       products = JSON.stringify(products);
       res.send(products);
     }
@@ -34,6 +30,26 @@ const postWishProduct = (req, res) => {
           ? { ...productFromDb, isWished: true }
           : productFromDb
       );
+      products = JSON.stringify(products);
+    }
+    fs.writeFile(productsDb, products, (err) => {
+      if (err) throw err;
+      else {
+        res.send(products);
+      }
+    });
+  });
+};
+const clearWishProducts = (req, res) => {
+  let products;
+  fs.readFile(productsDb, "utf8", (err, data) => {
+    if (err) throw err;
+    else {
+      products = JSON.parse(data);
+      products = products.map((productFromDb) => ({
+        ...productFromDb,
+        isWished: false,
+      }));
       products = JSON.stringify(products);
     }
     fs.writeFile(productsDb, products, (err) => {
@@ -72,4 +88,5 @@ module.exports = {
   deleteWishProduct,
   postWishProduct,
   getWishProducts,
+  clearWishProducts,
 };
